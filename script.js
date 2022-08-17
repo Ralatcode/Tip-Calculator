@@ -1,40 +1,117 @@
-// Ask for user input for bill, tip percentage and number of people and store in a variable
-// parsefloat converts the user input from string to float
-let billAmount = parseFloat(prompt("Please enter your bill amount"));
+const billAmount = document.getElementById('input-bill');
+const tipBtns = document.querySelector('.tip');
+const tipCustom = document.getElementById('input-tip');
+const people = document.getElementById('input-people');
+const errorMsg = document.querySelector('.error-msg');
+const results = document.querySelectorAll('.value');
+const resetBtn = document.querySelector('.reset');
 
-let tip = parseFloat(prompt("Please enter your percentage tip"));
+billAmount.addEventListener('input', setBillValue);
+
+Array.from(tipBtns).forEach(btn => {
+    btn.addEventListener('click', handleClick);
+});
+
+tipCustom.addEventListener('input', setTipCustomValue);
+
+people.addEventListener('input', setPeopleValue);
+
+resetBtn.addEventListener('click', reset);
 
 
-let people = parseFloat(prompt("Please enter the number of people")); 
+let billValue = 0.0;
+let tipValue = 0.15;
+let peopleValue = 1;
 
-
-// function to calculate tip percentage
-function calculateTipPercentage(tip) {
-    return tip / 100;
-}
-// store the invoked function to a variable
-let tipPercentage = calculateTipPercentage(tip);
-
-
-// function to calculate actual tip 
-function calculateTotalTip(billAmount, tipPercentage) {
-    return billAmount * tipPercentage;
-}
-
-// calls tip function and then adds it to bill amount, saves to a variable totalBill
-let totalBill = calculateTotalTip(billAmount, tipPercentage) + billAmount;
-
-// calculates the tip per person and converts it to 2 decimal point with .toFixed() method.
-let tipPerPerson = calculateTotalTip(billAmount, tipPercentage) / people;
-tipPerPerson = tipPerPerson.toFixed(2);
-
-// function to calculate bill per person
-function calculateBillPerPerson(totalBill, people) {
-    return totalBill / people;
+function validateFloat(s) {
+    let rgx = /^[0-9]*\.?[0-9]*$/;
+    return s.match(rgx);
 }
 
-// calls billperson function and converts it to a 2 decimal point and then saves in variable.
-let billPerPerson = calculateBillPerPerson(totalBill, people).toFixed(2);
+function validateInt(s) {
+    let rgx =  /^[0-9]*$/;
+    return s.match(rgx);
+}
 
-// alert results
-alert(`Bill per person will be: ${billPerPerson} and Tip per person will be ${tipPerPerson}`);
+function setBillValue() {
+    if (billAmount.value.includes(',')){
+        billAmount.value = billAmount.value.replace(',','.');
+    }
+
+    if (!validateFloat(billAmount.value)) {
+        billAmount.value = billAmount.value.substring(0, billAmount.value,length-1);
+    }
+
+    billValue = parseFloat(billAmount.value);
+
+    calculateTip();
+}
+
+function handleClick(event) {
+    Array.from(tipBtns).forEach(btn => {
+        btn.classList.remove('btn-active');
+
+        if (event.target.innerHTML == btn.innerHTML){
+            btn.classList.add('btn-active');
+            tipValue = parseFloat(btn.innerHTML)/100;
+        }
+    });
+
+    tipCustom.value = '';
+
+    calculateTip();
+}
+
+function setTipCustomValue() {
+    if(!validateInt(tipCustom.value)) {
+        tipCustom.value = tipCustom.value.substring(0, tipCustom.value.length-1);
+    }
+
+    tipValue = parseFloat(tipCustom.value/100);
+
+    Array.from(tipBtns).forEach(btn =>{
+        btn.classList.remove('btn-active');
+    });
+
+    if (tipCustom.value !== '') {
+        calculateTip();
+    }
+    
+}
+
+function setPeopleValue(){
+    if (!validateInt(people.value)) {
+        people.value = people.value.substring(0, people.value.length-1);
+    }
+
+    peopleValue = parseFloat(people.value);
+
+    if (peopleValue <= 0) {
+        errorMsg.classList.add('show-error-msg');
+        setTimeout(function(){
+            errorMsg.classList.remove('show-error-msg');
+        }, 3000);
+    }
+
+    calculateTip();
+
+}
+
+function calculateTip() {
+    if (peopleValue >= 1) {
+        let tipAmount = billValue * tipValue / peopleValue;
+        let total = billValue * (tipValue + 1) / peopleValue;
+        results[0].innerHTML = '$' + tipAmount.toFixed(2);
+        results[1].innerHTML = '$' + total.toFixed(2);
+    }
+}
+
+function reset() {
+    billAmount.value = '0.0';
+    setBillValue();
+
+    tipBtns[2].click();
+
+    people.value = '1';
+    setPeopleValue();
+}
