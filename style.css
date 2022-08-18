@@ -22,9 +22,7 @@ body {
 
 input {
     font: inherit;
-    unicode-bidi:bidi-override; 
-    direction: RTL; 
-
+    text-align: right;
 }
 
 .container {
