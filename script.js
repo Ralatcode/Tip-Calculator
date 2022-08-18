@@ -1,5 +1,5 @@
 const billAmount = document.getElementById('input-bill');
-const tipBtns = document.querySelector('.tip');
+let tipBtns = document.querySelectorAll('.tip');
 const tipCustom = document.getElementById('input-tip');
 const people = document.getElementById('input-people');
 const errorMsg = document.querySelector('.error-msg');
@@ -8,7 +8,11 @@ const resetBtn = document.querySelector('.reset');
 
 billAmount.addEventListener('input', setBillValue);
 
-Array.from(tipBtns).forEach(btn => {
+tipBtns = Array.from(tipBtns);
+
+console.log(tipBtns);
+
+tipBtns.forEach(btn => {
     btn.addEventListener('click', handleClick);
 });
 
@@ -48,7 +52,7 @@ function setBillValue() {
 }
 
 function handleClick(event) {
-    Array.from(tipBtns).forEach(btn => {
+    tipBtns.forEach(btn => {
         btn.classList.remove('btn-active');
 
         if (event.target.innerHTML == btn.innerHTML){
@@ -69,7 +73,7 @@ function setTipCustomValue() {
 
     tipValue = parseFloat(tipCustom.value/100);
 
-    Array.from(tipBtns).forEach(btn => {
+    tipBtns.forEach(btn =>{
         btn.classList.remove('btn-active');
     });
 
@@ -90,7 +94,7 @@ function setPeopleValue(){
         errorMsg.classList.add('show-error-msg');
         setTimeout(function(){
             errorMsg.classList.remove('show-error-msg');
-        }, 3000);
+        }, 5000);
     }
 
     calculateTip();

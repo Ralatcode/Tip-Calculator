@@ -126,11 +126,21 @@ input {
     margin-top: 2rem;
 }
 
+.people-container > .label-wrapper {
+    display: flex;
+    justify-content: space-between;
+}
+
 .error-msg {
-    display: none;
     font-size: .8rem;
     color: red;
     text-align: right;
+    opacity: 0;
+}
+
+.show-error-msg {
+    opacity: 1;
+    transition: opacity 1s ease-in-out;
 }
 
 .output {
