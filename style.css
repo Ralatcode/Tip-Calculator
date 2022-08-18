@@ -175,6 +175,12 @@ input {
     color: var(--very-dark-cyan);
 }
 
+.output > .btn:hover {
+    background-color: var(--light-grayish);
+    color: var(--very-dark-cyan);
+}
+
+/* desktop */
 @media (min-width: 480px) {
     .container {
         min-height: 100vh;
