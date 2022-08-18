@@ -69,7 +69,7 @@ function setTipCustomValue() {
 
     tipValue = parseFloat(tipCustom.value/100);
 
-    Array.from(tipBtns).forEach(btn =>{
+    Array.from(tipBtns).forEach(btn => {
         btn.classList.remove('btn-active');
     });
 
