@@ -10,7 +10,6 @@ billAmount.addEventListener('input', setBillValue);
 
 tipBtns = Array.from(tipBtns);
 
-console.log(tipBtns);
 
 tipBtns.forEach(btn => {
     btn.addEventListener('click', handleClick);
